@@ -1,6 +1,8 @@
 import axios from "axios";
 const Service=axios.create({
-    baseURL:"http://localhost:8080",
+    // baseURL:"http://localhost:8080",//production
+    baseURL:'http://127.0.0.1:4523/m1/1944697-0-default',//mock 的development
+
 })
 Service.interceptors.response.use((res)=>{
     res=res.data

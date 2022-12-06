@@ -67,13 +67,15 @@ data(){
  
 },
  created(){
-  const {role}=JSON.parse(localStorage.getItem('user'));
+  if(localStorage.getItem('user')){
+    const {role}=JSON.parse(localStorage.getItem('user'));
   console.log(role);
   if(role==1){
     this.roleInfo='用户'
   }
   else{
     this.roleInfo="管理员"
+  }
   }
  }
 }

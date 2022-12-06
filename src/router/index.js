@@ -24,25 +24,33 @@ const routes = [
         path: '/stationManage',
         name: 'stationManage',
         component:()=>import('../views/station/station.vue'),
-        meta:true
+        meta:{
+          manage:true
+        }
       },
       {
         path: '/stationList',
         name: 'stationList',
         component:()=>import('../views/station/stationList.vue'),
-        meta:true
+        meta:{
+          manage:true
+        }
       },
       {
         path: '/trainManage',
         name: 'trainMange',
         component:()=>import('../views/train/train.vue'),
-        meta:true
+        meta:{
+          manage:true
+        }
       },
       {
         path: '/trainList',
         name: 'trainList',
         component:()=>import('../views/train/trainList.vue'),
-        meta:true
+        meta:{
+          manage:true
+        }
       },
     ]
   },

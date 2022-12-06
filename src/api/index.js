@@ -38,11 +38,11 @@ export function createOrEditStation(params){
     })
 }
 //获取站点列表
-export function getStationList(params){
+export function getStationList(){
     return Service({
         url:'station/list',
-        method:'post',
-        data:params
+        method:'get',
+        
     })
 }
 //站点删除

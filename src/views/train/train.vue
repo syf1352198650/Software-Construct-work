@@ -32,12 +32,17 @@
           </div>
           <div class="startStation">
             <div><span>起始站点</span></div>
+            <el-form-item label="站点名">
+               <el-select v-model="form.stations.startStation.stationName" placeholder="请选择站点" @change="startSelectChange">
+      <el-option v-for="(item,index) in stationList" :key="index" :label="item.name" :value="item.name"></el-option>
+      
+    </el-select>
+              <!-- <el-input v-model="form.stations.startStation.stationName"></el-input> -->
+            </el-form-item>
             <el-form-item label="站点Id">
               <el-input v-model="form.stations.startStation.stationId"></el-input>
             </el-form-item>
-            <el-form-item label="站点名">
-              <el-input v-model="form.stations.startStation.stationName"></el-input>
-            </el-form-item>
+            
             <el-form-item label="站点城市">
               <el-input v-model="form.stations.startStation.city"></el-input>
             </el-form-item>
@@ -47,12 +52,16 @@
           </div>
           <div class="endStation">
             <div><span>目的站点</span></div>
+            <el-form-item label="站点名">
+              <el-select v-model="form.stations.endStation.stationName" placeholder="请选择站点" @change="endSelectChange">
+      <el-option v-for="(item,index) in stationList" :key="index" :label="item.name" :value="item.name"></el-option>
+      
+    </el-select>
+            </el-form-item>
             <el-form-item label="站点Id">
               <el-input v-model="form.stations.endStation.stationId"></el-input>
             </el-form-item>
-            <el-form-item label="站点名">
-              <el-input v-model="form.stations.endStation.stationName"></el-input>
-            </el-form-item>
+            
             <el-form-item label="站点城市">
               <el-input v-model="form.stations.endStation.city"></el-input>
             </el-form-item>
@@ -65,12 +74,17 @@
           <div class="routeItem">
             <i class="el-icon-arrow-left" @click="sub"></i>
           <div class="cont">
+            <el-form-item label="站点名">
+              <el-select v-model="form.stations.routes[currentIndex].stationName" placeholder="请选择站点" @change="routesSelectChange">
+      <el-option v-for="(item,index) in stationList" :key="index" :label="item.name" :value="item.name"></el-option>
+      
+    </el-select>
+              <!-- <el-input v-model="form.stations.routes[currentIndex].stationName"></el-input> -->
+            </el-form-item>
             <el-form-item label="站点Id">
               <el-input v-model="form.stations.routes[currentIndex].stationId"></el-input>
             </el-form-item>
-            <el-form-item label="站点名">
-              <el-input v-model="form.stations.routes[currentIndex].stationName"></el-input>
-            </el-form-item>
+            
             <el-form-item label="站点城市">
               <el-input v-model="form.stations.routes[currentIndex].city"></el-input>
             </el-form-item>
@@ -90,7 +104,7 @@
 
         <div class="btn"><el-form-item>
           <el-button type="primary" @click="onSubmit">立即创建</el-button>
-          <el-button>取消</el-button>
+          <!-- <el-button>取消</el-button> -->
         </el-form-item></div>
        </div>
       </el-form>
@@ -100,10 +114,11 @@
 
 <script>
 import {formatDetailTime} from "@/utils/compuTime"
-import {createRoute} from "@/api"
+import {createRoute,getStationList} from "@/api"
 export default {
   data() {
     return {
+      stationList:[],
         currentIndex:0,
       form: {
         transId: "",
@@ -139,7 +154,34 @@ export default {
       },
     };
   },
+  created(){
+getStationList().then(( res)=>{
+  console.log('stationList',res);
+  this.stationList=res.data;
+})
+  },
   methods: {
+    routesSelectChange(val){
+        console.log(val);
+        let index=this.stationList.findIndex((v)=>v.name==val);
+        console.log(index);
+        this.form.stations.routes[this.currentIndex].city=this.stationList[index].city;
+        this.form.stations.routes[this.currentIndex].stationId=this.stationList[index].id;
+    },
+    startSelectChange(val){
+        console.log(val);
+        let index=this.stationList.findIndex((v)=>v.name==val);
+        console.log(index);
+        this.form.stations.startStation.city=this.stationList[index].city;
+        this.form.stations.startStation.stationId=this.stationList[index].id;
+    },
+    endSelectChange(val){
+        console.log(val);
+        let index=this.stationList.findIndex((v)=>v.name==val);
+        console.log(index);
+        this.form.stations.endStation.city=this.stationList[index].city;
+        this.form.stations.endStation.stationId=this.stationList[index].id;
+    },
     add(){
         this.currentIndex++;
        
@@ -187,6 +229,19 @@ export default {
              const params=this.form;
       createRoute(params).then((res)=>{
         console.log(res);
+        if(res.code==200){
+          this.$message({
+          message: '创建成功',
+          type: 'success'
+        });
+        this.$router.push('/trainList')
+        }
+        else{
+          this.$message({
+          message: '创建失败',
+          type: 'error'
+        });
+        }
       })
     },
   },

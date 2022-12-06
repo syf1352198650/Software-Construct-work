@@ -48,10 +48,11 @@ methods:{
                 //发起请求
               console.log('请求成功');
               login(this.loginForm).then((res)=>{
-                this.$router.push('/');
+                
                 this.initUser(res.response);
                 console.log(this.$store.state.token,'111',this.$store.state.token);
                 localStorage.setItem('user',JSON.stringify(res.response))
+                this.$router.push('/').catch(()=>{});
               })
             }
             else{

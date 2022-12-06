@@ -252,6 +252,18 @@ import {getTrainList,deleteRoute,createOrEditStation} from "@/api"
         const params=this.form
       createOrEditStation(params).then((res)=>{
         console.log(res);
+        if(res.code==200){
+          this.$message({
+          message: '编辑成功',
+          type: 'success'
+        });
+        }
+        else{
+          this.$message({
+          message: '编辑失败',
+          type: 'error'
+        });
+        }
       })
     },
     
@@ -264,6 +276,22 @@ import {getTrainList,deleteRoute,createOrEditStation} from "@/api"
         console.log(row.transId);
         deleteRoute(row.transId).then((res)=>{
             console.log('删除成功');
+            if(res.code==200){
+          this.$message({
+          message: '删除成功',
+          type: 'success'
+        });
+        }
+        else{
+          this.$message({
+          message: '删除失败',
+          type: 'error'
+        });
+        }
+         getTrainList().then((res)=>{
+        console.log('list',res);
+        this.tableData=res.data
+      })
         })
       
       }
